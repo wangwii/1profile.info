@@ -1,0 +1,46 @@
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.1.1'
+    }
+}
+
+apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+apply plugin: 'idea'
+
+repositories {
+    mavenCentral()
+    maven {
+      url = 'http://oss.sonatype.org/content/repositories/snapshots/'
+    }
+}
+
+dependencies {
+    compile "io.vertx:vertx-core:${project.vertxVersion}"
+    compile "io.vertx:vertx-web:${project.vertxVersion}"
+    compile "io.vertx:vertx-service-factory:${project.vertxVersion}"
+
+    compile 'org.slf4j:slf4j-api:1.7.12'
+    runtime 'ch.qos.logback:logback-classic:1.1.3'
+    runtime 'ch.qos.logback:logback-core:1.1.3'
+    //testCompile "junit:junit:4.11"
+}
+
+mainClassName = "io.vertx.core.Starter"
+applicationDefaultJvmArgs = [
+  "-Dvertx.logger-delegate-factory-class-name=io.vertx.core.logging.SLF4JLogDelegateFactory"
+  //"-DLoggerFactory.LOGGER_DELEGATE_FACTORY_CLASS_NAME=io.vertx.core.logging.SLF4JLogDelegateFactory"
+]
+
+def mainVerticle = 'info.oneprofile.Main'
+run {
+  args = ["run", mainVerticle]
+}
+
+jar {
+  manifest {
+      attributes 'Main-Verticle': mainVerticle
+  }
+}
