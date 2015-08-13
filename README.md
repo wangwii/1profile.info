@@ -1,2 +1,7 @@
 # 1profile.info
-1profile.info
+
+```
+./gradlew run [--debug-jvm]
+```
+
+
